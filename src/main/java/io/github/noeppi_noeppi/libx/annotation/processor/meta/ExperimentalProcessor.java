@@ -21,8 +21,8 @@ public class ExperimentalProcessor extends Processor {
     @Override
     public void run(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         for (Element element : roundEnv.getElementsAnnotatedWith(Experimental.class)) {
-            
-            if (LibXAPEnv.release(this) == Boolean.TRUE) {
+            Boolean release = LibXAPEnv.release(this);
+            if (release != null && release) {
                 this.messager().printMessage(Diagnostic.Kind.ERROR, "Releases may not contain experimental members.", element);
             }
         }
