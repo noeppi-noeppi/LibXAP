@@ -1,11 +1,6 @@
 package io.github.noeppi_noeppi.libx.annotation.meta;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import static java.lang.annotation.ElementType.*;
+import java.lang.annotation.*;
 
 /**
  * Elements annotated with {@code Experimental} are subject to change. Use them at your own
@@ -13,6 +8,10 @@ import static java.lang.annotation.ElementType.*;
  */
 @Documented
 @Retention(RetentionPolicy.CLASS)
-@Target(value = {CONSTRUCTOR, FIELD, LOCAL_VARIABLE, METHOD, PACKAGE, MODULE, PARAMETER, TYPE})
+@Target(value = {
+        ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.LOCAL_VARIABLE, ElementType.METHOD,
+        ElementType.PACKAGE, ElementType.MODULE, ElementType.PARAMETER, ElementType.TYPE
+})
 public @interface Experimental {
+    
 }

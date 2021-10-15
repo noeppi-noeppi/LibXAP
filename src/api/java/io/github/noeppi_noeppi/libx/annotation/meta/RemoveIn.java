@@ -1,12 +1,6 @@
 package io.github.noeppi_noeppi.libx.annotation.meta;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.ElementType.TYPE;
+import java.lang.annotation.*;
 
 /**
  * Marks the version in which a feature will be removed.
@@ -16,7 +10,10 @@ import static java.lang.annotation.ElementType.TYPE;
  */
 @Documented
 @Retention(RetentionPolicy.CLASS)
-@Target(value = {CONSTRUCTOR, FIELD, LOCAL_VARIABLE, METHOD, PACKAGE, MODULE, PARAMETER, TYPE})
+@Target(value = {
+        ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.LOCAL_VARIABLE, ElementType.METHOD,
+        ElementType.PACKAGE, ElementType.MODULE, ElementType.PARAMETER, ElementType.TYPE
+})
 public @interface RemoveIn {
 
     /**
