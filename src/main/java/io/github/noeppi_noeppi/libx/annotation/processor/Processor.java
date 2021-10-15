@@ -222,4 +222,15 @@ public abstract class Processor extends AbstractProcessor implements ProcessorEn
     }
     
     public abstract void run(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv);
+
+    @Override
+    public Set<String> getSupportedOptions() {
+        return Set.of(
+                "mod.properties.mod_id",
+                "mod.properties.mc_version",
+                "mod.properties.mod_version",
+                "mod.properties.java_version",
+                "mod.properties.release"
+        );
+    }
 }
