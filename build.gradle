@@ -1,0 +1,100 @@
+import io.github.noeppi_noeppi.tools.modgradle.api.Versioning
+
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net/' }
+        maven { url = 'https://libraries.minecraft.net/' }
+        maven { url = 'https://maven.parchmentmc.org/' }
+        maven { url = 'https://plugins.gradle.org/m2/' }
+        maven { url = 'https://noeppi-noeppi.github.io/MinecraftUtilities/maven' }
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'io.github.noeppi_noeppi.tools:ModGradle:1.0.33'
+    }
+}
+
+apply plugin: 'java-library'
+apply plugin: 'maven-publish'
+
+group 'io.github.noeppi_noeppi.tools'
+version = Versioning.getVersion(project, "${project.mc_version}-${project.base_version}", '/var/www/maven')
+
+println "Java: ${System.getProperty('java.version')}   JVM: ${System.getProperty('java.vm.version')}(${System.getProperty('java.vendor')})   Arch: ${System.getProperty('os.arch')}"
+println "AP: ${project.name}   Group: ${project.group}   Version: ${project.version}"
+println ''
+
+configurations {
+    dep
+    api.extendsFrom(dep)
+
+    depResolvable
+    depResolvable.extendsFrom(dep)
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Must always be libraries, that are also in minecraft / forge and must match the exact version.
+    dep 'com.google.code.findbugs:jsr305:3.0.2'
+    dep 'org.apache.maven:maven-artifact:3.8.1'
+}
+
+sourceSets {
+    api {
+        compileClasspath = configurations.depResolvable
+    }
+}
+
+dependencies {
+    implementation sourceSets.api.output
+}
+
+task apiJar(type: Jar) {
+    classifier 'api'
+    
+    from sourceSets.api.output
+}
+
+jar {
+    from sourceSets.api.output
+    from sourceSets.main.output
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier 'sources'
+    from sourceSets.api.allSource
+    from sourceSets.main.allSource
+}
+
+build.dependsOn(apiJar)
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact apiJar
+            artifact sourcesJar
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
+            pom {
+                licenses {
+                    license {
+                        name = "The Apache License, Version 2.0"
+                        url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url '/var/www/maven'
+        }
+    }
+}
