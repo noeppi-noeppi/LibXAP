@@ -21,6 +21,7 @@ public abstract class Processor extends AbstractProcessor implements ProcessorEn
     private Elements elements;
     private Filer filer;
     private Messager messager;
+    private Map<String, String> options;
     
     private Set<String> supported = null;
 
@@ -31,6 +32,7 @@ public abstract class Processor extends AbstractProcessor implements ProcessorEn
         this.elements = processingEnv.getElementUtils();
         this.messager = processingEnv.getMessager();
         this.filer = processingEnv.getFiler();
+        this.options = Map.copyOf(processingEnv.getOptions());
     }
 
     public abstract Class<?>[] getTypes();
@@ -53,6 +55,11 @@ public abstract class Processor extends AbstractProcessor implements ProcessorEn
     @Override
     public Messager messager() {
         return Objects.requireNonNull(this.messager);
+    }
+
+    @Override
+    public Map<String, String> options() {
+        return Objects.requireNonNull(this.options);
     }
 
     @Override

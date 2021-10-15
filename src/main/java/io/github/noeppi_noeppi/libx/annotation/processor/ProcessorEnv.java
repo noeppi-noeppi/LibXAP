@@ -8,6 +8,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -20,6 +21,7 @@ public interface ProcessorEnv {
     Elements elements();
     Filer filer();
     Messager messager();
+    Map<String, String> options();
 
     TypeMirror forClass(Class<?> clazz);
     boolean isSuppressed(Element element, String warnings);

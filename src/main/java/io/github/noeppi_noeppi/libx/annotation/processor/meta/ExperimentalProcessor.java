@@ -1,9 +1,7 @@
 package io.github.noeppi_noeppi.libx.annotation.processor.meta;
 
 import io.github.noeppi_noeppi.libx.annotation.meta.Experimental;
-import io.github.noeppi_noeppi.libx.annotation.meta.RemoveIn;
 import io.github.noeppi_noeppi.libx.annotation.processor.Processor;
-import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
@@ -23,7 +21,8 @@ public class ExperimentalProcessor extends Processor {
     @Override
     public void run(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         for (Element element : roundEnv.getElementsAnnotatedWith(Experimental.class)) {
-            if (LibXAPEnv.release() == Boolean.TRUE) {
+            
+            if (LibXAPEnv.release(this) == Boolean.TRUE) {
                 this.messager().printMessage(Diagnostic.Kind.ERROR, "Releases may not contain experimental members.", element);
             }
         }
