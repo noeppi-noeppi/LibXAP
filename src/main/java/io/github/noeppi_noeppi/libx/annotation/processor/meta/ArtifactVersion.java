@@ -46,13 +46,12 @@ public record ArtifactVersion(List<List<String>> parts) implements Comparable<Ar
     private static int compareParts(List<String> s1, List<String> s2) {
         List<String> normalized1 = normalize(s1);
         List<String> normalized2 = normalize(s2);
-        if (normalized1.size() < normalized2.size()) return -1;
-        if (normalized1.size() > normalized2.size()) return 1;
-        for (int i = 0; i < normalized1.size(); i++) {
+        int minIdx = Math.min(normalized1.size(), normalized2.size());
+        for (int i = 0; i < minIdx; i++) {
             int result = compareStrings(normalized1.get(i), normalized2.get(i));
             if (result != 0) return result;
         }
-        return 0;
+        return Integer.compare(normalized1.size(), normalized2.size());
     }
     
     private static int compareStrings(String s1, String s2) {
@@ -94,7 +93,11 @@ public record ArtifactVersion(List<List<String>> parts) implements Comparable<Ar
         String[] strings = version.split("-");
         if (strings.length == 0) return INVALID;
         List<List<String>> parts = Arrays.stream(strings)
-                .map(part -> Arrays.stream(part.split("\\.")).toList())
+                .map(part -> Arrays.stream(part.split("\\."))
+                        .map(String::strip)
+                        .filter(s -> !s.isEmpty())
+                        .toList())
+                .filter(l -> !l.isEmpty())
                 .toList();
         return new ArtifactVersion(parts);
     }
