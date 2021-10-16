@@ -2,7 +2,6 @@ package io.github.noeppi_noeppi.libx.annotation.processor.meta;
 
 import io.github.noeppi_noeppi.libx.annotation.meta.RemoveIn;
 import io.github.noeppi_noeppi.libx.annotation.processor.Processor;
-import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
@@ -33,9 +32,9 @@ public class RemoveInProcessor extends Processor {
                 continue;
             }
             if (!remove.minecraft().isEmpty()) {
-                DefaultArtifactVersion minecraftVersion = LibXAPEnv.minecraftVersion(this);
+                ArtifactVersion minecraftVersion = LibXAPEnv.minecraftVersion(this);
                 if (minecraftVersion != null) {
-                    DefaultArtifactVersion ver = new DefaultArtifactVersion(remove.minecraft());
+                    ArtifactVersion ver = ArtifactVersion.parse(remove.minecraft());
                     if (minecraftVersion.compareTo(ver) > 0) {
                         this.messager().printMessage(Diagnostic.Kind.ERROR, "Element should have been removed.", element);
                         continue;
@@ -43,9 +42,9 @@ public class RemoveInProcessor extends Processor {
                 }
             }
             if (!remove.mod().isEmpty()) {
-                DefaultArtifactVersion modVersion = LibXAPEnv.modVersion(this);
+                ArtifactVersion modVersion = LibXAPEnv.modVersion(this);
                 if (modVersion != null) {
-                    DefaultArtifactVersion ver = new DefaultArtifactVersion(remove.mod());
+                    ArtifactVersion ver = ArtifactVersion.parse(remove.mod());
                     if (modVersion.compareTo(ver) > 0) {
                         this.messager().printMessage(Diagnostic.Kind.ERROR, "Element should have been removed.", element);
                     }

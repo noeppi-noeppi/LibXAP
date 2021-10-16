@@ -33,16 +33,6 @@ configurations {
     depResolvable.extendsFrom(dep)
 }
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    // Must always be libraries, that are also in minecraft / forge and must match the exact version.
-    dep 'com.google.code.findbugs:jsr305:3.0.2'
-    dep 'org.apache.maven:maven-artifact:3.8.1'
-}
-
 sourceSets {
     api {
         compileClasspath = configurations.depResolvable
